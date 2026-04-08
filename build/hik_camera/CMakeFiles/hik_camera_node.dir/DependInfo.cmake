@@ -11,8 +11,12 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/xiong/ros2_hik_camera/build/hik_camera/rclcpp_components/node_main_hik_camera_node.cpp" "CMakeFiles/hik_camera_node.dir/rclcpp_components/node_main_hik_camera_node.cpp.o" "gcc" "CMakeFiles/hik_camera_node.dir/rclcpp_components/node_main_hik_camera_node.cpp.o.d"
   )
 
-# Targets to which this target links.
-set(CMAKE_TARGET_LINKED_INFO_FILES
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.

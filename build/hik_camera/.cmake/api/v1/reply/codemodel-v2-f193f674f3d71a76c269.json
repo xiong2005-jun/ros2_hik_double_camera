@@ -7,7 +7,7 @@
 				{
 					"build" : ".",
 					"hasInstallRule" : true,
-					"jsonFile" : "directory-.-e25a485470401b312d01.json",
+					"jsonFile" : "directory-.-2c75c6504be4f8ba2ecc.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.12"
@@ -46,14 +46,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "hik_camera::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-hik_camera-f95a4434d455b041dedb.json",
+					"jsonFile" : "target-hik_camera-4d74859efd4e356bbbb4.json",
 					"name" : "hik_camera",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "hik_camera_node::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-hik_camera_node-9eeeb5cc27aff63db088.json",
+					"jsonFile" : "target-hik_camera_node-2a2fa6e401b602f57508.json",
 					"name" : "hik_camera_node",
 					"projectIndex" : 0
 				},
@@ -83,6 +83,6 @@
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 3
+		"minor" : 7
 	}
 }

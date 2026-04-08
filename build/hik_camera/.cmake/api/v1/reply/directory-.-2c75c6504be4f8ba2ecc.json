@@ -285,6 +285,17 @@
 			"type" : "target"
 		},
 		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"cxxModuleBmiTarget" : 
+			{
+				"id" : "hik_camera_node::@6890427a1f51a3e7e1df",
+				"index" : 1
+			},
+			"destination" : "lib/hik_camera",
+			"type" : "cxxModuleBmi"
+		},
+		{
 			"backtrace" : 3,
 			"component" : "Unspecified",
 			"destination" : "lib",
@@ -307,6 +318,17 @@
 			"targetId" : "hik_camera_node::@6890427a1f51a3e7e1df",
 			"targetIndex" : 1,
 			"type" : "target"
+		},
+		{
+			"backtrace" : 4,
+			"component" : "Unspecified",
+			"cxxModuleBmiTarget" : 
+			{
+				"id" : "hik_camera_node::@6890427a1f51a3e7e1df",
+				"index" : 1
+			},
+			"destination" : "lib/hik_camera",
+			"type" : "cxxModuleBmi"
 		},
 		{
 			"backtrace" : 5,

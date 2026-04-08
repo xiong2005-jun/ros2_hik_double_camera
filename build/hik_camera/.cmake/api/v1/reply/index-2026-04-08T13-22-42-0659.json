@@ -8,30 +8,30 @@
 		},
 		"paths" : 
 		{
-			"cmake" : "/usr/bin/cmake",
-			"cpack" : "/usr/bin/cpack",
-			"ctest" : "/usr/bin/ctest",
-			"root" : "/usr/share/cmake-3.22"
+			"cmake" : "/usr/local/bin/cmake",
+			"cpack" : "/usr/local/bin/cpack",
+			"ctest" : "/usr/local/bin/ctest",
+			"root" : "/usr/local/share/cmake-3.29"
 		},
 		"version" : 
 		{
 			"isDirty" : false,
 			"major" : 3,
-			"minor" : 22,
-			"patch" : 1,
-			"string" : "3.22.1",
+			"minor" : 29,
+			"patch" : 6,
+			"string" : "3.29.6",
 			"suffix" : ""
 		}
 	},
 	"objects" : 
 	[
 		{
-			"jsonFile" : "codemodel-v2-c5b4cdcb9ad43d026269.json",
+			"jsonFile" : "codemodel-v2-f193f674f3d71a76c269.json",
 			"kind" : "codemodel",
 			"version" : 
 			{
 				"major" : 2,
-				"minor" : 3
+				"minor" : 7
 			}
 		}
 	],
@@ -41,12 +41,12 @@
 		{
 			"codemodel-v2" : 
 			{
-				"jsonFile" : "codemodel-v2-c5b4cdcb9ad43d026269.json",
+				"jsonFile" : "codemodel-v2-f193f674f3d71a76c269.json",
 				"kind" : "codemodel",
 				"version" : 
 				{
 					"major" : 2,
-					"minor" : 3
+					"minor" : 7
 				}
 			}
 		}
