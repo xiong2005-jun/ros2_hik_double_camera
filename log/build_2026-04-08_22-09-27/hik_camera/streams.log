@@ -1,0 +1,89 @@
+[0.011s] Invoking command in '/home/xiong/ros2_hik_camera/build/hik_camera': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake /home/xiong/ros2_hik_camera -DCMAKE_INSTALL_PREFIX=/home/xiong/ros2_hik_camera/install/hik_camera
+[0.073s] -- The C compiler identification is GNU 12.3.0
+[0.145s] -- The CXX compiler identification is GNU 12.3.0
+[0.158s] -- Detecting C compiler ABI info
+[0.234s] -- Detecting C compiler ABI info - done
+[0.254s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.255s] -- Detecting C compile features
+[0.255s] -- Detecting C compile features - done
+[0.260s] -- Detecting CXX compiler ABI info
+[0.345s] -- Detecting CXX compiler ABI info - done
+[0.365s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.365s] -- Detecting CXX compile features
+[0.366s] -- Detecting CXX compile features - done
+[0.369s] -- Found ament_cmake: 1.3.13 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.510s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter
+[0.605s] -- Found rclcpp: 16.0.18 (/opt/ros/humble/share/rclcpp/cmake)
+[0.657s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.663s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.674s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.690s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.712s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.771s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.774s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.885s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")
+[0.921s] -- Found FastRTPS: /opt/ros/humble/include
+[0.977s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.986s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[1.066s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[1.067s] -- Found Threads: TRUE
+[1.147s] -- Found rclcpp_components: 16.0.18 (/opt/ros/humble/share/rclcpp_components/cmake)
+[1.186s] -- Found sensor_msgs: 4.9.1 (/opt/ros/humble/share/sensor_msgs/cmake)
+[1.237s] -- Found image_transport: 3.1.12 (/opt/ros/humble/share/image_transport/cmake)
+[1.268s] -- Found camera_info_manager: 3.1.12 (/opt/ros/humble/share/camera_info_manager/cmake)
+[1.288s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.376s] -- Added test 'copyright' to check source files copyright and LICENSE
+[1.428s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.428s] -- Configured cppcheck include dirs: $<BUILD_INTERFACE:/home/xiong/ros2_hik_camera/hikSDK/include>
+[1.428s] -- Configured cppcheck exclude dirs and/or files: 
+[1.479s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[1.479s] -- Configured cpplint exclude dirs and/or files: 
+[1.486s] -- Added test 'flake8' to check Python code syntax and style conventions
+[1.499s] -- Added test 'lint_cmake' to check CMake code style
+[1.506s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[1.558s] -- Added test 'uncrustify' to check C / C++ code style
+[1.558s] -- Configured uncrustify additional arguments: 
+[1.565s] -- Added test 'xmllint' to check XML markup files
+[1.567s] -- Configuring done (1.6s)
+[1.586s] -- Generating done (0.0s)
+[1.591s] -- Build files have been written to: /home/xiong/ros2_hik_camera/build/hik_camera
+[1.603s] Invoked command in '/home/xiong/ros2_hik_camera/build/hik_camera' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake /home/xiong/ros2_hik_camera -DCMAKE_INSTALL_PREFIX=/home/xiong/ros2_hik_camera/install/hik_camera
+[1.605s] Invoking command in '/home/xiong/ros2_hik_camera/build/hik_camera': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --build /home/xiong/ros2_hik_camera/build/hik_camera -- -j16 -l16
+[1.634s] [ 25%] [32mBuilding CXX object CMakeFiles/hik_camera.dir/src/hik_camera_node.cpp.o[0m
+[1.634s] [ 50%] [32mBuilding CXX object CMakeFiles/hik_camera_node.dir/rclcpp_components/node_main_hik_camera_node.cpp.o[0m
+[5.156s] [ 75%] [32m[1mLinking CXX executable hik_camera_node[0m
+[5.274s] [ 75%] Built target hik_camera_node
+[6.039s] [100%] [32m[1mLinking CXX shared library libhik_camera.so[0m
+[6.192s] [100%] Built target hik_camera
+[6.197s] Invoked command in '/home/xiong/ros2_hik_camera/build/hik_camera' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --build /home/xiong/ros2_hik_camera/build/hik_camera -- -j16 -l16
+[6.203s] Invoking command in '/home/xiong/ros2_hik_camera/build/hik_camera': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --install /home/xiong/ros2_hik_camera/build/hik_camera
+[6.205s] -- Install configuration: ""
+[6.205s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/lib/hik_camera/hik_camera_node
+[6.206s] -- Set non-toolchain portion of runtime path of "/home/xiong/ros2_hik_camera/install/hik_camera/lib/hik_camera/hik_camera_node" to ""
+[6.206s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/lib/libhik_camera.so
+[6.208s] -- Set non-toolchain portion of runtime path of "/home/xiong/ros2_hik_camera/install/hik_camera/lib/libhik_camera.so" to ""
+[6.208s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/lib/hik_camera/hik_camera_node
+[6.208s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/config
+[6.208s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/config/camera1.yaml
+[6.209s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/config/hik_camera_config.yaml
+[6.209s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/config/camera0.yaml
+[6.209s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/launch
+[6.209s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/launch/hik_camera.launch.py
+[6.209s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/launch/calibrationbiaoding.launch.py
+[6.209s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/ament_index/resource_index/package_run_dependencies/hik_camera
+[6.210s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/ament_index/resource_index/parent_prefix_path/hik_camera
+[6.210s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/environment/ament_prefix_path.sh
+[6.210s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/environment/ament_prefix_path.dsv
+[6.210s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/environment/path.sh
+[6.211s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/environment/path.dsv
+[6.211s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/local_setup.bash
+[6.211s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/local_setup.sh
+[6.212s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/local_setup.zsh
+[6.212s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/local_setup.dsv
+[6.212s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/package.dsv
+[6.212s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/ament_index/resource_index/packages/hik_camera
+[6.213s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/ament_index/resource_index/rclcpp_components/hik_camera
+[6.213s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/cmake/hik_cameraConfig.cmake
+[6.213s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/cmake/hik_cameraConfig-version.cmake
+[6.213s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/package.xml
+[6.215s] Invoked command in '/home/xiong/ros2_hik_camera/build/hik_camera' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --install /home/xiong/ros2_hik_camera/build/hik_camera

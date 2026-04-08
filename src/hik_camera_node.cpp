@@ -1,3 +1,4 @@
+
 #include "MvCameraControl.h"
 #include <camera_info_manager/camera_info_manager.hpp>
 #include <image_transport/image_transport.hpp>
@@ -181,10 +182,13 @@ private:
             // 创建独立互斥锁（使用 unique_ptr 因为 mutex 不可移动）
             camera_mutexes_.push_back(std::make_unique<std::mutex>());
 
-            // 创建发布器
+            // 创建发布器（使用更兼容的 QoS，避免 RViz2 手动调整）
             std::string topic = "camera_" + std::to_string(cam_idx) + "/image_raw";
+            rclcpp::QoS qos(rclcpp::KeepLast(5));
+            qos.reliability(RMW_QOS_POLICY_RELIABILITY_RELIABLE);
+            qos.durability(RMW_QOS_POLICY_DURABILITY_VOLATILE);
             auto pub = image_transport::create_camera_publisher(
-                this, topic, rmw_qos_profile_sensor_data);
+                this, topic, qos.get_rmw_qos_profile());
             camera_pubs_.push_back(pub);
 
             // 相机内参管理器
@@ -334,12 +338,23 @@ private:
           continue;
         }
 
-        // 硬件时间戳（微秒 -> 纳秒）
+        // ========== 修改点：硬件时间戳有效性检查与回退 ==========
         uint64_t ts_us = (uint64_t)out_frame.stFrameInfo.nDevTimeStampHigh << 32
                          | out_frame.stFrameInfo.nDevTimeStampLow;
-        uint64_t sec = ts_us / 1000000ULL;
-        uint64_t nsec = (ts_us % 1000000ULL) * 1000ULL;
-        image_msg.header.stamp = rclcpp::Time(sec, nsec);
+        if (ts_us != 0) {
+            uint64_t sec = ts_us / 1000000ULL;
+            uint64_t nsec = (ts_us % 1000000ULL) * 1000ULL;
+            image_msg.header.stamp = rclcpp::Time(sec, nsec);
+        } else {
+            // 硬件时间戳无效（常见于某些USB相机或初始化阶段），回退到系统时间
+            image_msg.header.stamp = this->now();
+            static rclcpp::Time last_warn_time = this->now();
+            if ((this->now() - last_warn_time).seconds() > 5.0) {
+                RCLCPP_WARN(this->get_logger(), "相机%zu 硬件时间戳为0，使用系统时间（RViz2显示正常）", cam_idx);
+                last_warn_time = this->now();
+            }
+        }
+        // ====================================================
 
         // 发布
         camera_info_msg.header = image_msg.header;

@@ -3,6 +3,8 @@
 支持同时驱动两台海康威视工业相机
 
 ## 启动方法
+source install/setup.bash
+
 ros2 launch hik_camera hik_camera.launch.py
 
 ## 使用方法
@@ -18,6 +20,7 @@ camera0_gain: 0.0
 ## 相机标定流程（基于陈君的相机包）
 1. 安装标定功能包
 sudo apt install ros-humble-camera-calibration
+
 source install/setup.bash
 
 2. 启动相机驱动
