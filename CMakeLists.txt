@@ -1,67 +1,80 @@
 cmake_minimum_required(VERSION 3.8)
 project(hik_camera)
 
-## Use C++14
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-## By adding -Wall and -Werror, the compiler does not ignore warnings anymore,
-## enforcing cleaner code.
-add_definitions(-Wall -Werror)
-
-## Export compile commands for clangd
+add_definitions(-Wall)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(ament_cmake_auto REQUIRED)
-ament_auto_find_build_dependencies()
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(image_transport REQUIRED)
+find_package(camera_info_manager REQUIRED)
 
-ament_auto_add_library(${PROJECT_NAME} SHARED
+# 直接创建库，不要用 ament_auto
+add_library(${PROJECT_NAME} SHARED
   src/hik_camera_node.cpp
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC hikSDK/include)
+# 头文件
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hikSDK/include>
+  $<INSTALL_INTERFACE:include>
+)
 
+# 依赖
+ament_target_dependencies(${PROJECT_NAME}
+  rclcpp
+  rclcpp_components
+  sensor_msgs
+  image_transport
+  camera_info_manager
+)
+
+# 海康库
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
   target_link_directories(${PROJECT_NAME} PUBLIC hikSDK/lib/amd64)
-  install(
-    DIRECTORY hikSDK/lib/amd64/
-    DESTINATION lib
-  )
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
   target_link_directories(${PROJECT_NAME} PUBLIC hikSDK/lib/arm64)
-  install(
-    DIRECTORY hikSDK/lib/arm64/
-    DESTINATION lib
-  )
-else()
-  message(FATAL_ERROR "Unsupport host system architecture: ${CMAKE_HOST_SYSTEM_PROCESSOR}!")
 endif()
 
 target_link_libraries(${PROJECT_NAME}
   FormatConversion
   MediaProcess
   MvCameraControl
-  MVRender
   MvUsb3vTL
 )
 
+# 注册组件（关键！这才是正确写法）
 rclcpp_components_register_node(${PROJECT_NAME}
-  PLUGIN hik_camera::HikCameraNode
+  PLUGIN hik_camera::HikDualCameraNode
   EXECUTABLE ${PROJECT_NAME}_node
 )
 
+# 安装库
+install(TARGETS
+  ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+# 安装节点
+install(TARGETS ${PROJECT_NAME}_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# 安装配置与启动文件
+install(DIRECTORY config launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+# 测试
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
-  list(APPEND AMENT_LINT_AUTO_EXCLUDE
-    ament_cmake_copyright
-    ament_cmake_cpplint
-    ament_cmake_uncrustify
-  )
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_auto_package(
-  INSTALL_TO_SHARE
-  config
-  launch
-)
+ament_package()

@@ -1,0 +1,15 @@
+/hik_dual_camera:
+  ros__parameters:
+    # ========== 主相机 camera0 ==========
+    camera0_serial: ""   # 主相机 SN
+    camera0_info_url: "package://hik_camera/config/camera0.yaml"
+    camera0_exposure: 8000
+    camera0_gain: 1.0
+
+    # ========== 副相机 camera1 ==========
+    camera1_serial: ""   # 副相机 SN
+    camera1_info_url: "package://hik_camera/config/camera1.yaml"
+    camera1_exposure: 5000
+    camera1_gain: 0.5
+
+    use_sensor_data_qos: true

@@ -1,0 +1,16 @@
+/hik_dual_camera:
+  ros__parameters:
+    # 相机 camera0
+    camera0_serial: "DA7093654"
+    camera0_info_url: "package://hik_camera/config/camera0.yaml"
+    camera0_exposure: 6000
+    camera0_gain: 0.0
+
+    # 相机 camera1
+    camera1_serial: "DA7093752"
+    camera1_info_url: "package://hik_camera/config/camera1.yaml"
+    camera1_exposure: 6000
+    camera1_gain: 0.0
+
+    # 这个可能没用
+    use_sensor_data_qos: true
