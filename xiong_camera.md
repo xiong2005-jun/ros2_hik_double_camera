@@ -64,6 +64,7 @@ echo "/opt/MVS/lib/64" | sudo tee /etc/ld.so.conf.d/hikrobot.conf
 sudo ldconfig
 
 
+
 ####//======历史版本============//####
 
 

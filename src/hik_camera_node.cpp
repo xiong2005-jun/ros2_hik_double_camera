@@ -187,10 +187,7 @@ private:
             camera_pubs_.push_back(pub);
 
             std::string info_url = this->get_parameter("camera" + std::to_string(cam_idx) + "_info_url").as_string();
-            // ====================== 核心修改：禁用自动发布 ======================
-            // 第三个参数 false = 关闭CameraInfoManager自动发布定时器
-            auto info_mgr = std::make_unique<camera_info_manager::CameraInfoManager>(
-                this, "camera_" + std::to_string(cam_idx), false);
+            auto info_mgr = std::make_unique<camera_info_manager::CameraInfoManager>(this, "camera_" + std::to_string(cam_idx));
             sensor_msgs::msg::CameraInfo cam_info_msg;
             if (!info_url.empty() && info_mgr->validateURL(info_url)) {
                 info_mgr->loadCameraInfo(info_url);
@@ -331,8 +328,9 @@ private:
           continue;
         }
 
-	    // 统一使用系统时钟，避免硬件时间戳与系统时钟不同步导致 TF 查询失败
-        image_msg.header.stamp = this->now();
+        // 硬件时间戳回退
+        // 统一使用系统时钟，避免硬件时间戳与系统时钟不同步导致 TF 查询失败
+image_msg.header.stamp = this->now();
 
         // 帧率控制：计算距离上一次发布的时间，若未到间隔则睡眠
         if (fps_limit > 0.0) {
@@ -345,7 +343,7 @@ private:
             last_pub_time = std::chrono::steady_clock::now();
         }
 
-        // 发布：camera_info时间戳与图像完全同步
+        // 发布
         camera_info_msg.header = image_msg.header;
         camera_pub.publish(image_msg, camera_info_msg);
 
@@ -437,4 +435,5 @@ private:
 
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(hik_camera::HikDualCameraNode)
+
 

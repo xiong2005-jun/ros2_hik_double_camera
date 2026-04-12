@@ -1,0 +1,17 @@
+In file included from [01m[K/usr/include/c++/12/memory:75[m[K,
+                 from [01m[K/opt/ros/humble/include/camera_info_manager/camera_info_manager/camera_info_manager.hpp:41[m[K,
+                 from [01m[K/home/xiong/ros2_hik_camera/src/hik_camera_node.cpp:2[m[K:
+/usr/include/c++/12/bits/unique_ptr.h: In instantiation of ‘[01m[Kstd::__detail::__unique_ptr_t<_Tp> std::make_unique(_Args&& ...) [with _Tp = camera_info_manager::CameraInfoManager; _Args = {hik_camera::HikDualCameraNode*, __cxx11::basic_string<char, char_traits<char>, allocator<char> >, bool}; __detail::__unique_ptr_t<_Tp> = __detail::__unique_ptr_t<camera_info_manager::CameraInfoManager>][m[K’:
+[01m[K/home/xiong/ros2_hik_camera/src/hik_camera_node.cpp:192:85:[m[K   required from here
+[01m[K/usr/include/c++/12/bits/unique_ptr.h:1065:30:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Kcamera_info_manager::CameraInfoManager::CameraInfoManager(hik_camera::HikDualCameraNode*, std::__cxx11::basic_string<char>, bool)[m[K’
+ 1065 |     { return unique_ptr<_Tp>([01;31m[Knew _Tp(std::forward<_Args>(__args)...)[m[K); }
+      |                              [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/opt/ros/humble/include/camera_info_manager/camera_info_manager/camera_info_manager.hpp:185:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kcamera_info_manager::CameraInfoManager::CameraInfoManager(rclcpp::Node*, const std::string&, const std::string&)[m[K’
+  185 |   [01;36m[KCameraInfoManager[m[K(
+      |   [01;36m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/opt/ros/humble/include/camera_info_manager/camera_info_manager/camera_info_manager.hpp:188:25:[m[K [01;36m[Knote: [m[K  no known conversion for argument 3 from ‘[01m[Kbool[m[K’ to ‘[01m[Kconst std::string&[m[K’ {aka ‘[01m[Kconst std::__cxx11::basic_string<char>&[m[K’}
+  188 |     [01;36m[Kconst std::string & url = ""[m[K);
+      |     [01;36m[K~~~~~~~~~~~~~~~~~~~~^~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/hik_camera.dir/build.make:76：CMakeFiles/hik_camera.dir/src/hik_camera_node.cpp.o] 错误 1
+gmake[1]: *** [CMakeFiles/Makefile2:139：CMakeFiles/hik_camera.dir/all] 错误 2
+gmake: *** [Makefile:146：all] 错误 2
