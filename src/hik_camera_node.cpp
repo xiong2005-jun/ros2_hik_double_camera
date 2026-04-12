@@ -187,7 +187,10 @@ private:
             camera_pubs_.push_back(pub);
 
             std::string info_url = this->get_parameter("camera" + std::to_string(cam_idx) + "_info_url").as_string();
-            auto info_mgr = std::make_unique<camera_info_manager::CameraInfoManager>(this, "camera_" + std::to_string(cam_idx));
+            // ====================== 核心修改：禁用自动发布 ======================
+            // 第三个参数 false = 关闭CameraInfoManager自动发布定时器
+            auto info_mgr = std::make_unique<camera_info_manager::CameraInfoManager>(
+                this, "camera_" + std::to_string(cam_idx), false);
             sensor_msgs::msg::CameraInfo cam_info_msg;
             if (!info_url.empty() && info_mgr->validateURL(info_url)) {
                 info_mgr->loadCameraInfo(info_url);
@@ -328,21 +331,8 @@ private:
           continue;
         }
 
-        // 硬件时间戳回退
-        uint64_t ts_us = (uint64_t)out_frame.stFrameInfo.nDevTimeStampHigh << 32
-                         | out_frame.stFrameInfo.nDevTimeStampLow;
-        if (ts_us != 0) {
-            uint64_t sec = ts_us / 1000000ULL;
-            uint64_t nsec = (ts_us % 1000000ULL) * 1000ULL;
-            image_msg.header.stamp = rclcpp::Time(sec, nsec);
-        } else {
-            image_msg.header.stamp = this->now();
-            static rclcpp::Time last_warn_time = this->now();
-            if ((this->now() - last_warn_time).seconds() > 5.0) {
-                RCLCPP_WARN(this->get_logger(), "相机%zu 硬件时间戳为0，使用系统时间", cam_idx);
-                last_warn_time = this->now();
-            }
-        }
+	    // 统一使用系统时钟，避免硬件时间戳与系统时钟不同步导致 TF 查询失败
+        image_msg.header.stamp = this->now();
 
         // 帧率控制：计算距离上一次发布的时间，若未到间隔则睡眠
         if (fps_limit > 0.0) {
@@ -355,7 +345,7 @@ private:
             last_pub_time = std::chrono::steady_clock::now();
         }
 
-        // 发布
+        // 发布：camera_info时间戳与图像完全同步
         camera_info_msg.header = image_msg.header;
         camera_pub.publish(image_msg, camera_info_msg);
 
@@ -447,3 +437,4 @@ private:
 
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(hik_camera::HikDualCameraNode)
+

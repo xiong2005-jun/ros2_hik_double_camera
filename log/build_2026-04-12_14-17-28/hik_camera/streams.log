@@ -1,0 +1,36 @@
+[0.008s] Invoking command in '/home/xiong/ros2_hik_camera/build/hik_camera': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --build /home/xiong/ros2_hik_camera/build/hik_camera -- -j16 -l16
+[0.033s] [ 50%] [32mBuilding CXX object CMakeFiles/hik_camera.dir/src/hik_camera_node.cpp.o[0m
+[0.033s] [ 75%] Built target hik_camera_node
+[3.166s] [100%] [32m[1mLinking CXX shared library libhik_camera.so[0m
+[3.273s] [100%] Built target hik_camera
+[3.277s] Invoked command in '/home/xiong/ros2_hik_camera/build/hik_camera' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --build /home/xiong/ros2_hik_camera/build/hik_camera -- -j16 -l16
+[3.281s] Invoking command in '/home/xiong/ros2_hik_camera/build/hik_camera': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --install /home/xiong/ros2_hik_camera/build/hik_camera
+[3.282s] -- Install configuration: ""
+[3.282s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/lib/hik_camera/hik_camera_node
+[3.283s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/lib/libhik_camera.so
+[3.284s] -- Set non-toolchain portion of runtime path of "/home/xiong/ros2_hik_camera/install/hik_camera/lib/libhik_camera.so" to ""
+[3.284s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/lib/hik_camera/hik_camera_node
+[3.284s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/config
+[3.284s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/config/camera1.yaml
+[3.284s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/config/hik_camera_config.yaml
+[3.284s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/config/camera0.yaml
+[3.284s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/launch
+[3.284s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/launch/hik_camera.launch.py
+[3.284s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/launch/calibrationbiaoding.launch.py
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/ament_index/resource_index/package_run_dependencies/hik_camera
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/ament_index/resource_index/parent_prefix_path/hik_camera
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/environment/ament_prefix_path.sh
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/environment/ament_prefix_path.dsv
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/environment/path.sh
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/environment/path.dsv
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/local_setup.bash
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/local_setup.sh
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/local_setup.zsh
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/local_setup.dsv
+[3.285s] -- Installing: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/package.dsv
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/ament_index/resource_index/packages/hik_camera
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/ament_index/resource_index/rclcpp_components/hik_camera
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/cmake/hik_cameraConfig.cmake
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/cmake/hik_cameraConfig-version.cmake
+[3.285s] -- Up-to-date: /home/xiong/ros2_hik_camera/install/hik_camera/share/hik_camera/package.xml
+[3.286s] Invoked command in '/home/xiong/ros2_hik_camera/build/hik_camera' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --install /home/xiong/ros2_hik_camera/build/hik_camera
