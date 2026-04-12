@@ -1,0 +1,6 @@
+Invoking command in '/home/xiong/ros2_hik_camera/build/hik_camera': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake /home/xiong/ros2_hik_camera -DCMAKE_INSTALL_PREFIX=/home/xiong/ros2_hik_camera/install/hik_camera
+Invoked command in '/home/xiong/ros2_hik_camera/build/hik_camera' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake /home/xiong/ros2_hik_camera -DCMAKE_INSTALL_PREFIX=/home/xiong/ros2_hik_camera/install/hik_camera
+Invoking command in '/home/xiong/ros2_hik_camera/build/hik_camera': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --build /home/xiong/ros2_hik_camera/build/hik_camera -- -j16 -l16
+Invoked command in '/home/xiong/ros2_hik_camera/build/hik_camera' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --build /home/xiong/ros2_hik_camera/build/hik_camera -- -j16 -l16
+Invoking command in '/home/xiong/ros2_hik_camera/build/hik_camera': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --install /home/xiong/ros2_hik_camera/build/hik_camera
+Invoked command in '/home/xiong/ros2_hik_camera/build/hik_camera' returned '1': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --install /home/xiong/ros2_hik_camera/build/hik_camera

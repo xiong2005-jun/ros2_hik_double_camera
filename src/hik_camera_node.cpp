@@ -1,4 +1,3 @@
-
 #include "MvCameraControl.h"
 #include <camera_info_manager/camera_info_manager.hpp>
 #include <image_transport/image_transport.hpp>
@@ -46,7 +45,7 @@ public:
   {
     RCLCPP_INFO(this->get_logger(), "启动双相机驱动 HikDualCameraNode");
 
-    // 1. 声明ROS参数（序列号、内参文件等）
+    // 1. 声明ROS参数（序列号、内参文件、帧率等）
     declareParameters();
 
     // 2. 连接相机（失败则无限重试）
@@ -79,11 +78,13 @@ private:
     this->declare_parameter("camera0_info_url", "");
     this->declare_parameter("camera0_exposure", 5000);
     this->declare_parameter("camera0_gain", 0.0);
+    this->declare_parameter("camera0_fps", 30.0);   // 新增：帧率限制
 
     this->declare_parameter("camera1_serial", "");
     this->declare_parameter("camera1_info_url", "");
     this->declare_parameter("camera1_exposure", 5000);
     this->declare_parameter("camera1_gain", 0.0);
+    this->declare_parameter("camera1_fps", 30.0);   // 新增：帧率限制
   }
 
   // ======================== 多相机连接（无限重试） ========================
@@ -117,18 +118,15 @@ private:
     std::vector<int> matched_indices;
 
     auto tryConnect = [&](int cam_idx, const std::string& target_sn) -> bool {
-        for (unsigned int i = 0; i < device_list.nDeviceNum; ++i) {   // 使用 unsigned int 避免符号比较警告
-            // 跳过已被前一个相机占用的设备
+        for (unsigned int i = 0; i < device_list.nDeviceNum; ++i) {
             if (std::find(matched_indices.begin(), matched_indices.end(), i) != matched_indices.end())
                 continue;
 
             MV_CC_DEVICE_INFO* dev = device_list.pDeviceInfo[i];
             std::string dev_sn = getDeviceSerialNumber(dev);
-            // 如果用户指定了序列号则必须匹配，否则自动选择第一个可用
             if (!target_sn.empty() && dev_sn != target_sn)
                 continue;
 
-            // 尝试连接此设备
             void* handle = nullptr;
             ret = MV_CC_CreateHandle(&handle, dev);
             if (ret != MV_OK) {
@@ -142,7 +140,6 @@ private:
                 continue;
             }
 
-            // 获取图像基本信息
             MV_IMAGE_BASIC_INFO img_info;
             ret = MV_CC_GetImageInfo(handle, &img_info);
             if (ret != MV_OK) {
@@ -152,19 +149,16 @@ private:
                 continue;
             }
 
-            // 设置触发模式为连续（关闭硬件触发）
             ret = MV_CC_SetEnumValue(handle, "TriggerMode", 0);
             if (ret != MV_OK) {
                 RCLCPP_WARN(this->get_logger(), "相机%d 设置触发模式失败: %x", cam_idx, ret);
             }
 
-            // 设置曝光时间和增益
             double exposure = this->get_parameter("camera" + std::to_string(cam_idx) + "_exposure").as_int();
             double gain = this->get_parameter("camera" + std::to_string(cam_idx) + "_gain").as_double();
             MV_CC_SetFloatValue(handle, "ExposureTime", exposure);
             MV_CC_SetFloatValue(handle, "Gain", gain);
 
-            // 启动取流
             ret = MV_CC_StartGrabbing(handle);
             if (ret != MV_OK) {
                 RCLCPP_WARN(this->get_logger(), "相机%d 启动取流失败: %x", cam_idx, ret);
@@ -178,11 +172,12 @@ private:
             img_infos_.push_back(img_info);
             fail_counts_.push_back(0);
             serial_numbers_.push_back(dev_sn);
+            // 存储帧率限制
+            double fps = this->get_parameter("camera" + std::to_string(cam_idx) + "_fps").as_double();
+            fps_limits_.push_back(fps > 0.0 ? fps : 30.0);   // 默认30，若<=0则不限制
 
-            // 创建独立互斥锁（使用 unique_ptr 因为 mutex 不可移动）
             camera_mutexes_.push_back(std::make_unique<std::mutex>());
 
-            // 创建发布器（使用更兼容的 QoS，避免 RViz2 手动调整）
             std::string topic = "camera_" + std::to_string(cam_idx) + "/image_raw";
             rclcpp::QoS qos(rclcpp::KeepLast(5));
             qos.reliability(RMW_QOS_POLICY_RELIABILITY_RELIABLE);
@@ -191,7 +186,6 @@ private:
                 this, topic, qos.get_rmw_qos_profile());
             camera_pubs_.push_back(pub);
 
-            // 相机内参管理器
             std::string info_url = this->get_parameter("camera" + std::to_string(cam_idx) + "_info_url").as_string();
             auto info_mgr = std::make_unique<camera_info_manager::CameraInfoManager>(this, "camera_" + std::to_string(cam_idx));
             sensor_msgs::msg::CameraInfo cam_info_msg;
@@ -205,30 +199,25 @@ private:
             info_managers_.push_back(std::move(info_mgr));
             camera_info_msgs_.push_back(cam_info_msg);
 
-            // 转换参数
             MV_CC_PIXEL_CONVERT_PARAM param{};
             param.enDstPixelType = PixelType_Gvsp_RGB8_Packed;
             convert_params_.push_back(param);
 
-            // 图像消息
             sensor_msgs::msg::Image img_msg;
             img_msg.header.frame_id = "camera_" + std::to_string(cam_idx) + "_optical_frame";
             img_msg.encoding = "rgb8";
             image_msgs_.push_back(img_msg);
 
-            // 记录此设备索引已被使用
             matched_indices.push_back(i);
-            RCLCPP_INFO(this->get_logger(), "相机%d 连接成功 (序列号: %s)", cam_idx, dev_sn.c_str());
+            RCLCPP_INFO(this->get_logger(), "相机%d 连接成功 (序列号: %s, fps限制: %.1f)", cam_idx, dev_sn.c_str(), fps_limits_.back());
             return true;
         }
         return false;
     };
 
-    // 尝试连接相机0和相机1
     bool ok0 = tryConnect(0, sn0);
     bool ok1 = tryConnect(1, sn1);
 
-    // 至少要有一个相机成功
     if (!ok0 && !ok1) {
         disconnectAllCameras();
         return false;
@@ -254,7 +243,6 @@ private:
     }
     camera_handles_.clear();
     camera_mutexes_.clear();
-    // 其他容器可清空或保留，但为了整洁也清空
     img_infos_.clear();
     convert_params_.clear();
     image_msgs_.clear();
@@ -263,6 +251,7 @@ private:
     info_managers_.clear();
     fail_counts_.clear();
     serial_numbers_.clear();
+    fps_limits_.clear();
   }
 
   // ======================== 采集线程 ========================
@@ -282,8 +271,12 @@ private:
     auto& convert_param = convert_params_[cam_idx];
     auto& fail_count = fail_counts_[cam_idx];
     auto& mutex = camera_mutexes_[cam_idx];
+    double fps_limit = fps_limits_[cam_idx];
 
     int last_w = 0, last_h = 0;
+    // 帧率控制相关变量
+    std::chrono::steady_clock::time_point last_pub_time = std::chrono::steady_clock::now();
+    const std::chrono::duration<double> frame_interval(1.0 / fps_limit);
 
     while (rclcpp::ok()) {
       MV_FRAME_OUT out_frame{};
@@ -302,7 +295,6 @@ private:
         int w = out_frame.stFrameInfo.nWidth;
         int h = out_frame.stFrameInfo.nHeight;
 
-        // 分辨率自适应
         if (w != last_w || h != last_h) {
           image_msg.width = w;
           image_msg.height = h;
@@ -311,7 +303,6 @@ private:
           last_w = w; last_h = h;
         }
 
-        // 格式转换参数
         convert_param.nWidth = w;
         convert_param.nHeight = h;
         convert_param.pSrcData = out_frame.pBufAddr;
@@ -326,7 +317,6 @@ private:
         }
         if (ret != MV_OK) {
           RCLCPP_WARN(this->get_logger(), "相机%zu 像素转换失败: %x", cam_idx, ret);
-          // 释放缓冲区
           std::lock_guard<std::mutex> lock(*mutex);
           if (handle) MV_CC_FreeImageBuffer(handle, &out_frame);
           fail_count++;
@@ -338,7 +328,7 @@ private:
           continue;
         }
 
-        // ========== 修改点：硬件时间戳有效性检查与回退 ==========
+        // 硬件时间戳回退
         uint64_t ts_us = (uint64_t)out_frame.stFrameInfo.nDevTimeStampHigh << 32
                          | out_frame.stFrameInfo.nDevTimeStampLow;
         if (ts_us != 0) {
@@ -346,15 +336,24 @@ private:
             uint64_t nsec = (ts_us % 1000000ULL) * 1000ULL;
             image_msg.header.stamp = rclcpp::Time(sec, nsec);
         } else {
-            // 硬件时间戳无效（常见于某些USB相机或初始化阶段），回退到系统时间
             image_msg.header.stamp = this->now();
             static rclcpp::Time last_warn_time = this->now();
             if ((this->now() - last_warn_time).seconds() > 5.0) {
-                RCLCPP_WARN(this->get_logger(), "相机%zu 硬件时间戳为0，使用系统时间（RViz2显示正常）", cam_idx);
+                RCLCPP_WARN(this->get_logger(), "相机%zu 硬件时间戳为0，使用系统时间", cam_idx);
                 last_warn_time = this->now();
             }
         }
-        // ====================================================
+
+        // 帧率控制：计算距离上一次发布的时间，若未到间隔则睡眠
+        if (fps_limit > 0.0) {
+            auto now = std::chrono::steady_clock::now();
+            auto elapsed = now - last_pub_time;
+            if (elapsed < frame_interval) {
+                auto sleep_duration = frame_interval - elapsed;
+                std::this_thread::sleep_for(sleep_duration);
+            }
+            last_pub_time = std::chrono::steady_clock::now();
+        }
 
         // 发布
         camera_info_msg.header = image_msg.header;
@@ -381,7 +380,6 @@ private:
   void reconnectCamera(size_t cam_idx)
   {
     RCLCPP_INFO(this->get_logger(), "相机%zu 开始重连...", cam_idx);
-    // 先断开当前相机
     {
       std::lock_guard<std::mutex> lock(*(camera_mutexes_[cam_idx]));
       if (camera_handles_[cam_idx]) {
@@ -406,7 +404,6 @@ private:
           void* new_handle = nullptr;
           if (MV_CC_CreateHandle(&new_handle, device_list.pDeviceInfo[i]) == MV_OK &&
               MV_CC_OpenDevice(new_handle) == MV_OK) {
-            // 恢复参数
             double exposure = this->get_parameter("camera" + std::to_string(cam_idx) + "_exposure").as_int();
             double gain = this->get_parameter("camera" + std::to_string(cam_idx) + "_gain").as_double();
             MV_CC_SetFloatValue(new_handle, "ExposureTime", exposure);
@@ -433,7 +430,7 @@ private:
 
   // ======================== 成员变量 ========================
   std::vector<void*> camera_handles_;
-  std::vector<std::unique_ptr<std::mutex>> camera_mutexes_;   // 每个相机独立锁（用指针，避免移动问题）
+  std::vector<std::unique_ptr<std::mutex>> camera_mutexes_;
   std::vector<MV_IMAGE_BASIC_INFO> img_infos_;
   std::vector<MV_CC_PIXEL_CONVERT_PARAM> convert_params_;
   std::vector<sensor_msgs::msg::Image> image_msgs_;
@@ -442,6 +439,7 @@ private:
   std::vector<std::unique_ptr<camera_info_manager::CameraInfoManager>> info_managers_;
   std::vector<int> fail_counts_;
   std::vector<std::string> serial_numbers_;
+  std::vector<double> fps_limits_;          // 新增：存储每台相机的帧率限制
   std::vector<std::thread> capture_threads_;
 };
 
